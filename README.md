@@ -77,7 +77,7 @@ Bridges data transfer between the view and database. It converts user input (e.g
    - Set `USERNAME_FIELD` (`email`) and `REQUIRED_FIELDS` (`name`)
 
 2. Create `UserProfileManager`
-   In `profiles_api/managers.py`, define a custom model manager to override the default user creation methods. The default manager doesn't handle custom fields like email or name. By overriding `create_user`, you can define the behavior for creating users and ensure necessary fields are provided.
+   In `profiles_api/models.py`, define a custom model manager to override the default user creation methods. The default manager doesn't handle custom fields like email or name. By overriding `create_user`, you can define the behavior for creating users and ensure necessary fields are provided.
 
    - Create function `create_user`
      - Ensures `email` is provided
