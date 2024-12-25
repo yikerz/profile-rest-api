@@ -83,11 +83,14 @@ Bridges data transfer between the view and database. It converts user input (e.g
      - Ensures `email` is provided
      - Normalizes the email to a standard format
      - Creates a user instance and set its password securely using `set_password()`
+     - Save and return user
    - Create function `create_superuser`
      - Calls `create_user` to create a base user instance.
      - Sets `is_superuser` and `is_staff` to True.
+     - Save and return user
 
-3. Configure `AUTH_USER_MODEL` as `profiles_api.UserProfile`
+3. Configure `AUTH_USER_MODEL` as `profiles_api.UserProfile` in `profiles_project/settings.py`
+4. Register `models.UserProfile` model to the admit site
 
 #### `UserProfile` Serializer
 
@@ -116,9 +119,11 @@ Bridges data transfer between the view and database. It converts user input (e.g
 
 #### Register the ViewSet in URLs
 
-- Use a router (e.g., `DefaultRouter`) to simplify endpoint management.
-- Register the `UserProfileViewSet` with the router, specifying a base name (e.g., `profile`).
-- Include the router's URLs in the main urlpatterns to expose the endpoints (e.g., `/profile/`, `/profile/<id>/`).
+1. Create `urls.py` in `profiles_api`
+   - Use a router (e.g., `DefaultRouter`) to simplify endpoint management.
+   - Register the `UserProfileViewSet` with the router, specifying a base name (e.g., `profile`).
+   - Include the router's URLs in the main urlpatterns to expose the endpoints (e.g., `/profile/`, `/profile/<id>/`).
+2. Include `profiles_api/urls.py` in `profiles_project/urls.py`.
 
 #### Authentications and Permissions
 
@@ -132,7 +137,7 @@ Bridges data transfer between the view and database. It converts user input (e.g
 
 #### Search Profile Feature
 
-1. Add `filter_backends` to the `filters.SearchFilter` in the `UserProfileViewSet`.
+1. Add `filters.SearchFilter` to the `filter_backends` in the `UserProfileViewSet`.
 2. Define `search_fields` to specify which fields can be searched (e.g., `name`, `email`).
 
 ### Create Login API
@@ -160,9 +165,9 @@ Bridges data transfer between the view and database. It converts user input (e.g
 #### Define the ViewSet
 
 1. Create a `UserProfileFeedViewSet` class in `views.py` by inheriting from `viewsets.ModelViewSet`.
-   - Set `authentication_classes` to include `TokenAuthentication`.
    - Define `serializer_class` as `ProfileFeedItemSerializer`.
    - Set `queryset` to `ProfileFeedItem.objects.all()`.
+   - Set `authentication_classes` to include `TokenAuthentication`.
 2. Override `perform_create` method by using the serializer to save the object and assigning `user_profile` to the currently authenticated user.
 
 #### Register ViewSet to Router
